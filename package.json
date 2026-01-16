@@ -1,8 +1,4 @@
-{
-  "type": "module",
-  "name": "quantops-ib-backend",
-  ...
-}
+
 
 {
   "name": "quantops-react-dashboard",
