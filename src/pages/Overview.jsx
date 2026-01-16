@@ -1,29 +1,42 @@
 import { useEffect, useState } from "react";
 
 export default function Overview() {
-  const [status, setStatus] = useState("Loading...");
-  const [error, setError] = useState(false);
+  const [backendRunning, setBackendRunning] = useState(null);
+
+  const API_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
-    fetch("http://localhost:4000/api/status")
-      .then((res) => res.json())
-      .then((data) => {
-        setStatus("Backend running");
-        setError(false);
+    fetch(API_URL)
+      .then((res) => {
+        if (!res.ok) throw new Error("Backend not reachable");
+        return res.json();
+      })
+      .then(() => {
+        setBackendRunning(true);
       })
       .catch(() => {
-        setStatus("Failed to fetch backend");
-        setError(true);
+        setBackendRunning(false);
       });
-  }, []);
+  }, [API_URL]);
 
   return (
-    <div>
-      <h2>Overview</h2>
-      {error ? (
-        <p style={{ color: "red" }}>❌ {status}</p>
-      ) : (
-        <p style={{ color: "green" }}>✅ {status}</p>
+    <div style={{ padding: "2rem" }}>
+      <h1>Overview</h1>
+
+      {backendRunning === null && (
+        <p>Checking backend status...</p>
+      )}
+
+      {backendRunning === true && (
+        <p style={{ color: "limegreen", fontWeight: "bold" }}>
+          ✔ Backend running
+        </p>
+      )}
+
+      {backendRunning === false && (
+        <p style={{ color: "red", fontWeight: "bold" }}>
+          ✖ Failed to fetch backend
+        </p>
       )}
     </div>
   );
