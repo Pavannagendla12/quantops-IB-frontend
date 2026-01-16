@@ -1,4 +1,10 @@
 {
+  "type": "module",
+  "name": "quantops-ib-backend",
+  ...
+}
+
+{
   "name": "quantops-react-dashboard",
   "private": true,
   "version": "1.0.0",
